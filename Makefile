@@ -1,6 +1,6 @@
 .EXPORT_ALL_VARIABLES:
 APP_VERSION			= $(shell git describe --abbrev=0 --tags)
-APP_NAME				= stee
+APP_NAME				= stke
 DOCKER_ID_USER	= dmi7ry
 ENV_DIR					= ./docker
 

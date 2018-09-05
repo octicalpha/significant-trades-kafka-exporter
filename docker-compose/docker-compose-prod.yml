@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  stke:
+    restart: always
+    env_file:
+      - .env.prod
