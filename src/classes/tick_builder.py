@@ -42,7 +42,7 @@ class TickBuilder(Callback):
         deal               = "short" if parsed_message[4] == 0 else "long"
         type               = "trade" if len(parsed_message) == 5 else "liquidation"
 
-        len(parsed_message) not in (5,6):
+        if len(parsed_message) not in (5,6):
             self.logger.warn("Unsupported message length: %s" % message)
         valid = True
 
