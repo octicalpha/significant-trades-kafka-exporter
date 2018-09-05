@@ -63,7 +63,7 @@ class TickBuilder(Callback):
             if obj.get("type", None):
                 obj["message_type"] = obj["type"]
                 obj["type"] = "service"
-            return service_message
+            return [ service_message ]
         else:
             self.logger.exception("%s: %s is not a list" % ( self.name, messageList ))
 
