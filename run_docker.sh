@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker rmi $(docker images -q | grep stke)
+docker rmi $(docker images | grep stke | awk '{ print $1 }')
 docker run --rm --name=stke \
   --network=host \
   -e "LOG_LEVEL=INFO" \
