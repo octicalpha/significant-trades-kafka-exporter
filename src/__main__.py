@@ -16,8 +16,13 @@ topic_mapping = {
     "trade"         : SETTINGS["trades_topic"],
     "liquidation"   : SETTINGS["liquidation_topic"]
 }
-kafka = KafkaCallback(SETTINGS["kafka_url"], topic_mapping, default_topic_name=SETTINGS["service_topic"])
-#pc = PrintCallback(LOGGER)
+
+kafka = KafkaCallback(SETTINGS["kafka_url"],
+    type_topic_mapping=topic_mapping,
+    default_topic_name=SETTINGS["service_topic"],
+    logger=LOGGER
+)
+
 workers = []
 for i, p in enumerate(SETTINGS["pair_list"]):
     worker = p.copy()

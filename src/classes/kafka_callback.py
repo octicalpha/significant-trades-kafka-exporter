@@ -13,7 +13,7 @@ class KafkaCallback(Callback):
     default_topic_name  = None
     default_retries     = None
 
-    def __init__(self, kafka_url="", logger=None, type_topic_mapping=[], default_topic_name="other", default_retries=3):
+    def __init__(self, kafka_url, logger=None, type_topic_mapping=[], default_topic_name="other", default_retries=3):
         super().__init__("KafkaCallback", logger=logger)
 
         self.kafka_url          = kafka_url
@@ -24,14 +24,11 @@ class KafkaCallback(Callback):
         self.init()
 
     def init(self):
-        try:
-            self.producer = KafkaProducer(
-                bootstrap_servers=["kafka_url"],
-                value_serializer=lambda m: json.dumps(m).encode('ascii'),
-                retries=3
-            )
-        except Exception as e:
-            self.logger.exception("Error during kafka connection! %s" % e)
+        self.producer = KafkaProducer(
+            bootstrap_servers=[self.kafka_url],
+            value_serializer=lambda m: json.dumps(m).encode('ascii'),
+            retries=3
+        )
 
     def processCallback(self, obj):
         #NOTE: awesome sh*t is going on here
