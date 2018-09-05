@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker rmi $(docker images | grep stke)
+docker rmi $(docker images -q | grep stke)
 docker run --rm --name=stke \
   -e "LOG_LEVEL=INFO" \
   -e "KAFKA_URL=localhost:3000" \
