@@ -60,9 +60,9 @@ class TickBuilder(Callback):
         elif type(messageList) is dict:
             service_message = messageList.copy()
             service_message["pair"] = self.symbol1 + self.symbol2
-            if obj.get("type", None):
-                obj["message_type"] = obj["type"]
-                obj["type"] = "service"
+            if messageList.get("type", None):
+                messageList["message_type"] = messageList["type"]
+                messageList["type"] = "service"
             return [ service_message ]
         else:
             self.logger.exception("%s: %s is not a list" % ( self.name, messageList ))
