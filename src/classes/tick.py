@@ -9,10 +9,11 @@ class Tick(object):
     symbol1     = None
     symbol2     = None
     pair        = None
+    type        = None
 
     valid       = False
 
-    def __init__(self, exchange, timestamp, price, amount, deal, symbol1, symbol2):
+    def __init__(self, exchange, timestamp, price, amount, deal, symbol1, symbol2, type="trade"):
         self.valid      = False
         self.exchange   = exchange
         self.timestamp  = float(timestamp)
@@ -21,6 +22,7 @@ class Tick(object):
         self.symbol1    = symbol1.lower()
         self.symbol2    = symbol2.lower()
         self.amount     = amount
+        self.type       = type
         setattr(self, self.symbol1, amount)
         setattr(self, self.symbol2, amount * self.price)
         self.pair = ("%s%s" % ( symbol1, symbol2 ) ).upper()
@@ -47,6 +49,7 @@ class Tick(object):
         result["deal"]          = self.deal
         result["symbol1"]       = self.symbol1
         result["symbol2"]       = self.symbol2
+        result["type"]          = self.type
         return result
 
     def _format_value(self, val):

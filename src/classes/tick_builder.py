@@ -39,15 +39,12 @@ class TickBuilder(Callback):
         timestamp          = int(parsed_message[1])
         price              = float(parsed_message[2])
         amount             = float(parsed_message[3])
+        deal               = "short" if parsed_message[4] == 0 else "long"
+        type               = "trade" if len(parsed_message) == 5 else "liquidation"
 
-        if len(parsed_message) == 5:
-            deal               = "sell" if parsed_message[4] == 0 else "buy"
-            valid              = True
-        elif len(parsed_message) == 6:
-            deal               = "short_liq" if parsed_message[4] == 1 else "long_liq"
-            valid              = True
-        else:
+        len(parsed_message) not in (5,6):
             self.logger.warn("Unsupported message length: %s" % message)
+        valid = True
 
         if valid is True and amount >= self.min_export_amount:
             return Tick(exchange, timestamp, price, amount, deal, self.symbol1, self.symbol2)
@@ -60,6 +57,10 @@ class TickBuilder(Callback):
             self.logger.exception("MessageList=%s cannot be parsed!" % messageList)
         if type(messageList) is list:
             yield from (self._processMessage(message) for message in messageList if self._processMessage(message) is not None)
+        elif type(messageList) is dict:
+            service_message = messageList.copy()
+            service_message["pair"] = self.symbol1 + self.symbol2
+            return service_message
         else:
             self.logger.exception("%s: %s is not a list" % ( self.name, messageList ))
 
