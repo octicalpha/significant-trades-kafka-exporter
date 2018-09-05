@@ -45,6 +45,8 @@ class Tick(object):
         result["symbol2-ama"]   = getattr(self, self.symbol2)
         result[self.symbol1+"_b"] = self._format_value(getattr(self, self.symbol1))
         result[self.symbol2+"_b"] = self._format_value(getattr(self, self.symbol2))
+        result["symbol1-ama_b"] = result[self.symbol1+"_b"]
+        result["symbol2-ama_b"] = result[self.symbol2+"_b"]
         result["pair"]          = self.pair
         result["deal"]          = self.deal
         result["symbol1"]       = self.symbol1

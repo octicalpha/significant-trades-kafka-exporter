@@ -47,7 +47,7 @@ class TickBuilder(Callback):
         valid = True
 
         if valid is True and amount >= self.min_export_amount:
-            return Tick(exchange, timestamp, price, amount, deal, self.symbol1, self.symbol2)
+            return Tick(exchange, timestamp, price, amount, deal, self.symbol1, self.symbol2, type)
 
     def _processMessageList(self, messageList):
         try:
@@ -60,6 +60,9 @@ class TickBuilder(Callback):
         elif type(messageList) is dict:
             service_message = messageList.copy()
             service_message["pair"] = self.symbol1 + self.symbol2
+            if obj.get("type", None):
+                obj["message_type"] = obj["type"]
+                obj["type"] = "service"
             return service_message
         else:
             self.logger.exception("%s: %s is not a list" % ( self.name, messageList ))
