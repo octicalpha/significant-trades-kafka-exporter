@@ -1,5 +1,6 @@
 import websockets
 import asyncio
+import json
 from .callback import Callback
 from .tick import Tick
 from kafka import KafkaProducer
