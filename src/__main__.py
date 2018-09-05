@@ -1,6 +1,6 @@
 from .settings  import SETTINGS
 from .log       import LOGGER
-from .classes   import WSListener, TickBuilder, PrintCallback
+from .classes   import WSListener, TickBuilder, PrintCallback, KafkaCallback
 import asyncio
 import functools
 
@@ -11,14 +11,20 @@ if not SETTINGS["pair_list"]:
 if len(SETTINGS["ws_urls"]) != len(SETTINGS["pair_list"]):
     raise Exception("Length of pair List doesn't match Length of WS list. App will exit...")
 
-pc = PrintCallback(LOGGER)
+#kafka = KafkaProducer()
+topic_mapping = {
+    "trade"         : SETTINGS["trades_topic"],
+    "liquidation"   : SETTINGS["liquidation_topic"]
+}
+kafka = KafkaCallback(SETTINGS["kafka_url"], topic_mapping, default_topic_name=SETTINGS["service_topic"])
+#pc = PrintCallback(LOGGER)
 workers = []
 for i, p in enumerate(SETTINGS["pair_list"]):
     worker = p.copy()
     worker["ws"]        = WSListener(SETTINGS["ws_urls"][i], LOGGER)
     worker["builder"]   = TickBuilder(p["s1"], p["s2"], LOGGER)
     worker["ws"].addCallback(worker["builder"])
-    worker["builder"].addCallback(pc)
+    worker["builder"].addCallback(kafka)
     workers += [ worker ]
 print(workers)
 
