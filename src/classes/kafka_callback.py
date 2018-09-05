@@ -31,10 +31,12 @@ class KafkaCallback(Callback):
             retries=3
         )
 
-    def processCallback(self, obj):
+    async def processCallback(self, obj):
         #NOTE: awesome sh*t is going on here
         if type(obj) is Tick:
-            obj = obj.represent()
+            obj = obj.to_json()
+        if type(obj) is str:
+            obj = json.loads(obj)
 
         selected_topic = self.default_topic_name
         message_type = obj.get("type", None)
@@ -44,7 +46,7 @@ class KafkaCallback(Callback):
         if type(obj) != dict:
             raise Exception("object %s is not a dict!" % s)
 
-        self.producer.send(selected_topic, obj).add_callback(_kafka_log_success).add_errback(_kafka_log_error)
+        self.producer.send(selected_topic, obj).add_callback(self._kafka_log_success).add_errback(self._kafka_log_error)
 
     def _kafka_log_success(self, message):
         self.logger.info(message)
