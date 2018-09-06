@@ -1,9 +1,11 @@
 version: '3'
 
 services:
-  stee:
+  stke:
     image: ${DOCKER_ID_USER}/${APP_NAME}:${APP_VERSION}
     build:
       context: .
     container_name: ${APP_NAME}
     network_mode: "host"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

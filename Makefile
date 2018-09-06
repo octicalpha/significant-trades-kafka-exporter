@@ -2,7 +2,7 @@
 APP_VERSION			= $(shell git describe --abbrev=0 --tags)
 APP_NAME				= stke
 DOCKER_ID_USER	= dmi7ry
-ENV_DIR					= ./docker
+ENV_DIR					= ./docker-compose
 
 all: build
 

@@ -7,4 +7,6 @@ class DockerService(object):
         self.docker_client = docker.from_env()
 
     def list(self, filters, status="running"):
-        yield from [ c for c in self.docker_client.containers.list(filters) if c.status == status ]
+        filters["status"] = status
+        return self.docker_client.containers.list(filters=filters)
+        #return [ c for c in self.docker_client.containers.list(filters=filters) if c.status == status ]
