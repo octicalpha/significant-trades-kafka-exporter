@@ -37,7 +37,7 @@ class Tick(object):
         result["exchange"]      = self.exchange
         result["timestamp"]     = datetime.datetime.utcfromtimestamp(self.timestamp / 1000.0)
         result["short_ts"]      = datetime.datetime.utcfromtimestamp(self.timestamp / 1000.0).strftime("%d %H:%M")
-        result["price"]         = round(self.price, 2) if self.symbol2 == "usd" else round(self.price, 8)
+        result["price"]         = self.price
         result["price_b"]       = self._format_value(self.price)
         result[self.symbol1]    = getattr(self, self.symbol1) #round(getattr(self, self.symbol1), 8)
         result[self.symbol2]    = getattr(self, self.symbol2) #round(getattr(self, self.symbol2), 0) if self.symbol2 == "usd" else round(getattr(self, self.symbol2), 8)
