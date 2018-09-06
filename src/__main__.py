@@ -1,15 +1,15 @@
-from .settings  import SETTINGS
-from .log       import LOGGER
-from .classes   import WSListener, TickBuilder, PrintCallback, KafkaCallback
+from .settings      import SETTINGS
+from .log           import LOGGER
+from .classes       import WSListener, TickBuilder, PrintCallback, KafkaCallback
+from .sts_lookup    import STS_NODES
 import asyncio
 import functools
 
 if not SETTINGS["kafka_url"]:
     raise Exception("Kafka Url is not defined! App will exit...")
-if not SETTINGS["pair_list"]:
-    raise Exception("Pair List is not defined! App will exit...")
-if len(SETTINGS["ws_urls"]) != len(SETTINGS["pair_list"]):
-    raise Exception("Length of pair List doesn't match Length of WS list. App will exit...")
+
+if len(STS_NODES) == 0:
+    raise Exception("Cannot find any significant-trades-server nodes on that cluster")
 
 #kafka = KafkaProducer()
 topic_mapping = {
@@ -24,14 +24,14 @@ kafka = KafkaCallback(SETTINGS["kafka_url"],
 )
 
 workers = []
-for i, p in enumerate(SETTINGS["pair_list"]):
-    worker = p.copy()
-    worker["ws"]        = WSListener(SETTINGS["ws_urls"][i], LOGGER)
-    worker["builder"]   = TickBuilder(p["s1"], p["s2"], LOGGER)
+for node in STS_NODES:
+    worker = {}
+    worker["ws"]        = WSListener("ws://localhost:" + node["port"], LOGGER)
+    worker["builder"]   = TickBuilder(node["s1"], node["s2"], LOGGER)
     worker["ws"].addCallback(worker["builder"])
     worker["builder"].addCallback(kafka)
     workers += [ worker ]
-print(workers)
+LOGGER.info("Workers: %s" % workers)
 
 async def run_all_listeners():
     tasks = [
