@@ -13,7 +13,7 @@ if len(STS_NODES) == 0:
 
 #kafka = KafkaProducer()
 topic_mapping = {
-    "trade"         : SETTINGS["stke_rades_topic"],
+    "trade"         : SETTINGS["stke_trade_topic"],
     "liquidation"   : SETTINGS["stke_liquidation_topic"]
 }
 
