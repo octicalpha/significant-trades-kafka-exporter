@@ -5,7 +5,7 @@ from .sts_lookup    import STS_NODES
 import asyncio
 import functools
 
-if not SETTINGS["kafka_url"]:
+if not SETTINGS["stke_kafka_url"]:
     raise Exception("Kafka Url is not defined! App will exit...")
 
 if len(STS_NODES) == 0:
@@ -13,13 +13,13 @@ if len(STS_NODES) == 0:
 
 #kafka = KafkaProducer()
 topic_mapping = {
-    "trade"         : SETTINGS["trades_topic"],
-    "liquidation"   : SETTINGS["liquidation_topic"]
+    "trade"         : SETTINGS["stke_rades_topic"],
+    "liquidation"   : SETTINGS["stke_liquidation_topic"]
 }
 
-kafka = KafkaCallback(SETTINGS["kafka_url"],
+kafka = KafkaCallback(SETTINGS["stke_kafka_url"],
     type_topic_mapping=topic_mapping,
-    default_topic_name=SETTINGS["service_topic"],
+    default_topic_name=SETTINGS["stke_service_topic"],
     logger=LOGGER
 )
 
