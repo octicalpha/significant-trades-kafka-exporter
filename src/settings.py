@@ -6,7 +6,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("--stke_kafka_url",          help="url for kafka",                                   type=str,   default=None)
 parser.add_argument("--stke_liquidation_topic",  help="name of topic for liquidation messages",          type=str,   default="liquidations")
-parser.add_argument("--stke_trades_topic",       help="name of topic for trading messages",              type=str,   default="trades")
+parser.add_argument("--stke_trade_topic",        help="name of topic for trading messages",              type=str,   default="trades")
 parser.add_argument("--stke_service_topic",      help="name of topic for service messages",              type=str,   default="service")
 
 args = parser.parse_args()
