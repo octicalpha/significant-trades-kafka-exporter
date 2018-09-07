@@ -7,8 +7,10 @@ s = DockerService()
 sts_list = s.list(regex=r".*dmi7ry/significant-trades-server.*")
 for sts in sts_list:
     LOGGER.warning("Found contanier = { id=%s, name=%s, image=%s }" % (sts.id, sts.name, sts.attrs["Config"]["Image"]) )
-    #print (sts.attrs)
-    sts_config = {}
+
+    #zero by default, but can be overrided via STS_MIN_AMOUNT
+    sts_config = { "min": 0 }
+
     for env in [ env.split("=") for env in sts.attrs["Config"]["Env"] ]:
         if env[0] == "STS_DEFAULT_PAIR":
             sts_config["pair"]  = env[1].lower().replace("/", "")
@@ -16,6 +18,8 @@ for sts in sts_list:
             sts_config["s2"]    = env[1].split("/")[1]
         if env[0] == "STS_DEFAULT_PORT":
             sts_config["port"]  = env[1]
+        if env[0] == "STS_MIN_AMOUNT":
+            sts_config["min"]   = int(env[1])
 
     LOGGER.info("found container: %s" % sts_config)
 

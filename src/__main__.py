@@ -27,7 +27,7 @@ workers = []
 for node in STS_NODES:
     worker = {}
     worker["ws"]        = WSListener("ws://localhost:" + node["port"], LOGGER)
-    worker["builder"]   = TickBuilder(node["s1"], node["s2"], LOGGER)
+    worker["builder"]   = TickBuilder(node["s1"], node["s2"], min_export_amount=node["min"], logger=LOGGER)
     worker["ws"].addCallback(worker["builder"])
     worker["builder"].addCallback(kafka)
     workers += [ worker ]
