@@ -6,5 +6,5 @@ docker run --rm \
   --network=host \
   -v /var/run/docker.sock:/var/run/docker.sock:ro \
   -e "LOG_LEVEL=INFO" \
-  -e "KAFKA_URL=localhost:9092" \
+  -e "STKE_KAFKA_URL=localhost:9092" \
   dmi7ry/stke:latest
