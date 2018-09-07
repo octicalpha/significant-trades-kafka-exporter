@@ -3,9 +3,11 @@ from .log import LOGGER
 
 STS_NODES = []
 s = DockerService()
-sts_list = s.list({ "ancestor": "dmi7ry/significant-trades-server" })
+#sts_list = s.list({ "ancestor": "dmi7ry/significant-trades-server" })
+sts_list = s.list(regex=r".*dmi7ry/significant-trades-server.*")
 for sts in sts_list:
-    LOGGER.warning("Found contanier = { id=%s, name=%s }" % (sts.id, sts.name) )
+    LOGGER.warning("Found contanier = { id=%s, name=%s, image=%s }" % (sts.id, sts.name, sts.attrs["Config"]["Image"]) )
+    #print (sts.attrs)
     sts_config = {}
     for env in [ env.split("=") for env in sts.attrs["Config"]["Env"] ]:
         if env[0] == "STS_DEFAULT_PAIR":
