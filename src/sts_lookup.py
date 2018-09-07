@@ -19,7 +19,7 @@ for sts in sts_list:
         if env[0] == "STS_DEFAULT_PORT":
             sts_config["port"]  = env[1]
         if env[0] == "STS_MIN_AMOUNT":
-            sts_config["min"]   = int(env[1])
+            sts_config["min"]   = float(env[1])
 
     LOGGER.info("found container: %s" % sts_config)
 
